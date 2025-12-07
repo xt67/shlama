@@ -124,7 +124,35 @@ start_ollama() {
 }
 
 pull_model() {
-    local model="${SHLAMA_MODEL:-llama3.2}"
+    echo ""
+    print_color "$CYAN" "🤖 Choose an AI model:"
+    echo ""
+    echo "  1) llama3.2     - Fast & light (~2GB) [Recommended]"
+    echo "  2) llama3.2:1b  - Fastest, minimal (~1.3GB)"
+    echo "  3) llama3       - Balanced (~4.7GB)"  
+    echo "  4) mistral      - Good quality (~4.1GB)"
+    echo "  5) Skip         - I'll download a model later"
+    echo ""
+    
+    local model="llama3.2"
+    read -p "Select model [1-5] (default: 1): " -r choice
+    
+    case "$choice" in
+        1|"") model="llama3.2" ;;
+        2) model="llama3.2:1b" ;;
+        3) model="llama3" ;;
+        4) model="mistral" ;;
+        5) 
+            print_color "$YELLOW" "⚠ Skipping model download"
+            print_color "$YELLOW" "  Run 'ollama pull <model>' later to download a model"
+            return 0
+            ;;
+        *) model="llama3.2" ;;
+    esac
+    
+    # Override with environment variable if set
+    model="${SHLAMA_MODEL:-$model}"
+    
     print_color "$YELLOW" "📥 Pulling model ($model)..."
     
     # Check if model already exists
@@ -135,6 +163,11 @@ pull_model() {
         ollama pull "$model"
         print_color "$GREEN" "✓ Model $model downloaded"
     fi
+    
+    # Save the selected model as default
+    echo ""
+    print_color "$BLUE" "💡 Tip: To use this model by default, add to your ~/.bashrc:"
+    print_color "$NC" "   echo 'export SHLAMA_MODEL=$model' >> ~/.bashrc"
 }
 
 install_shlama() {

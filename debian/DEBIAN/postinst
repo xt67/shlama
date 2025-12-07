@@ -36,13 +36,40 @@ if ! curl -s http://localhost:11434/api/tags &> /dev/null 2>&1; then
 fi
 
 # Pull the default model if not present
+echo ""
+echo -e "${CYAN}🤖 Choose an AI model:${NC}"
+echo ""
+echo "  1) llama3.2     - Fast & light (~2GB) [Recommended]"
+echo "  2) llama3.2:1b  - Fastest, minimal (~1.3GB)"
+echo "  3) llama3       - Balanced (~4.7GB)"
+echo "  4) mistral      - Good quality (~4.1GB)"
+echo "  5) Skip         - I'll download a model later"
+echo ""
+
+read -p "Select model [1-5] (default: 1): " -r choice
+
 MODEL="llama3.2"
-echo -e "${BLUE}📥 Checking for AI model ($MODEL)...${NC}"
-if ! ollama list 2>/dev/null | grep -q "$MODEL"; then
-    echo -e "${YELLOW}Downloading $MODEL model (this may take a few minutes)...${NC}"
-    ollama pull "$MODEL" || echo -e "${YELLOW}⚠ Could not download model. Run 'ollama pull $MODEL' manually.${NC}"
-else
-    echo -e "${GREEN}✓ Model $MODEL already available${NC}"
+case "$choice" in
+    1|"") MODEL="llama3.2" ;;
+    2) MODEL="llama3.2:1b" ;;
+    3) MODEL="llama3" ;;
+    4) MODEL="mistral" ;;
+    5) 
+        echo -e "${YELLOW}⚠ Skipping model download${NC}"
+        echo -e "${YELLOW}  Run 'ollama pull <model>' later to download a model${NC}"
+        MODEL=""
+        ;;
+    *) MODEL="llama3.2" ;;
+esac
+
+if [ -n "$MODEL" ]; then
+    echo -e "${BLUE}📥 Checking for AI model ($MODEL)...${NC}"
+    if ! ollama list 2>/dev/null | grep -q "$MODEL"; then
+        echo -e "${YELLOW}Downloading $MODEL model (this may take a few minutes)...${NC}"
+        ollama pull "$MODEL" || echo -e "${YELLOW}⚠ Could not download model. Run 'ollama pull $MODEL' manually.${NC}"
+    else
+        echo -e "${GREEN}✓ Model $MODEL already available${NC}"
+    fi
 fi
 
 echo ""
