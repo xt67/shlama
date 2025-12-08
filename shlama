@@ -34,16 +34,35 @@ print_color() {
 
 # Check if Ollama is running
 check_ollama() {
-    if curl -s "${OLLAMA_HOST}/api/tags" > /dev/null 2>&1; then
+    if curl -s --connect-timeout 2 "${OLLAMA_HOST}/api/tags" > /dev/null 2>&1; then
         return 0
     fi
     return 1
+}
+
+# Check if using remote Ollama
+is_remote_ollama() {
+    case "$OLLAMA_HOST" in
+        http://localhost:*|http://127.0.0.1:*|"")
+            return 1  # Local
+            ;;
+        *)
+            return 0  # Remote
+            ;;
+    esac
 }
 
 # Start Ollama if not running
 start_ollama_if_needed() {
     if check_ollama; then
         return 0
+    fi
+    
+    # If using remote Ollama (like Windows from WSL), can't auto-start
+    if is_remote_ollama; then
+        print_color "$RED" "Error: Remote Ollama at ${OLLAMA_HOST} is not running."
+        print_color "$YELLOW" "Make sure Ollama is running on the remote host."
+        exit 1
     fi
     
     print_color "$YELLOW" "Starting Ollama..."
