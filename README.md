@@ -1,7 +1,5 @@
 # 🦙 shlama
 
-[![Buy me a chai](https://img.shields.io/badge/Buy%20me%20a%20chai-%F0%9F%8D%B5-blueviolet?style=for-the-badge)](https://onlychai.neocities.org/support.html?name=Rayyan%20Rahman&upi=onlystudies790-1%40oksbi)
-
 *Your terminal llama. Natural language → safe Linux commands. Powered by Ollama.*
 
 > **🪟 Looking for Windows?** Check out [shlama for Windows](https://github.com/xt67/shlama-windows)
@@ -220,6 +218,8 @@ If you find shlama useful, consider supporting its development:
 <a href="https://www.buymeacoffee.com/xt67" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="50" ></a>
 
 [![Sponsor on GitHub](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?logo=github)](https://github.com/sponsors/xt67)
+
+[![Buy me a chai](https://img.shields.io/badge/Buy%20me%20a%20chai-%F0%9F%8D%B5-blueviolet?style=for-the-badge)](https://onlychai.neocities.org/support.html?name=Rayyan%20Rahman&upi=onlystudies790-1%40oksbi)
 
 ---
 
